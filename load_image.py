@@ -1,8 +1,17 @@
+#!/usr/bin/env python3
+
+"""
+Image loader for our CDN RedisGears Example
+For help type:
+  load_image.py -h
+"""
+
 from __future__ import print_function
 from wand.image import Image
 import redis
 import argparse
 import logging
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, help="redis instance port", default=6379)
@@ -29,6 +38,7 @@ logging.basicConfig(level=log_level)
 
 with Image(filename=args.image) as img:
     jpeg_bin = img.make_blob()
+
     try:
         redis_obj.hset(args.key, args.field, jpeg_bin)
     except redis.RedisError as err:
